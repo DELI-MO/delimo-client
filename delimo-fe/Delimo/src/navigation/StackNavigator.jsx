@@ -1,8 +1,9 @@
 import React from 'react';
+import {CardStyleInterpolators} from '@react-navigation/stack';
 import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from '../screen/Login/LoginScreen';
 import LoginFormScreen from '../screen/Login/LoginFormScreen';
-import {CardStyleInterpolators} from '@react-navigation/stack';
+import SignInScreen from '../screen/Login/SignInScreen';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -16,6 +17,7 @@ const StackNavigator = () => {
         name="LoginForm"
         component={LoginFormScreen}
       />
+      <Stack.Screen name="SignIn" component={SignInScreen} />
     </Stack.Navigator>
   );
 };

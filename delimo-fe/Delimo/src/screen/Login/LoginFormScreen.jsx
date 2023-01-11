@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import react, {useState} from 'react';
 import {
   Text,
@@ -10,6 +11,7 @@ import {
 import {Shadow} from 'react-native-shadow-2';
 const LoginFormScreen = () => {
   const [press, setPress] = useState(false);
+  const Navigation = useNavigation();
   return (
     <>
       <View style={Styles.LoginFormContainer}>
@@ -73,7 +75,10 @@ const LoginFormScreen = () => {
             </Pressable>
             <View style={{flexDirection: 'row', marginTop: 100}}>
               <Text>아직 계정이 없으신가요? </Text>
-              <Pressable>
+              <Pressable
+                onPress={() => {
+                  Navigation.navigate('SignIn');
+                }}>
                 <Text style={{color: '#FF889E'}}>회원가입</Text>
               </Pressable>
             </View>

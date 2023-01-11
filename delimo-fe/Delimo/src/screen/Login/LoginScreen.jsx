@@ -40,6 +40,9 @@ const LoginScreen = () => {
       </View>
       <View style={Styles.LoginBtnContainer}>
         <Pressable
+          onPress={() => {
+            Navigation.navigate('LoginForm');
+          }}
           onPressIn={() => {
             setPress(true);
           }}

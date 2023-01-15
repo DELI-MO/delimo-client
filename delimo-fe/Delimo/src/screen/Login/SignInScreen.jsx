@@ -9,9 +9,18 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Shadow} from 'react-native-shadow-2';
+
 const SignInScreen = () => {
   const Navigation = useNavigation();
   const [press, setPress] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+
+  console.log('email:', email);
+  console.log('password:', password);
+  console.log('confirm:', confirm);
+
   return (
     <>
       <View style={Styles.SignInContainer}>
@@ -52,7 +61,12 @@ const SignInScreen = () => {
               distance={4}
               offset={[0, 2]}
               paintInside={false}>
-              <TextInput style={Styles.Form} placeholder="Email" />
+              <TextInput
+                value={email}
+                onChangeText={setEmail}
+                style={Styles.Form}
+                placeholder="Email"
+              />
             </Shadow>
             <Shadow
               style={{marginBottom: 20}}
@@ -60,6 +74,8 @@ const SignInScreen = () => {
               offset={[0, 2]}
               paintInside={false}>
               <TextInput
+                value={password}
+                onChangeText={setPassword}
                 secureTextEntry={true}
                 style={Styles.Form}
                 placeholder="Password"
@@ -72,10 +88,21 @@ const SignInScreen = () => {
               paintInside={false}>
               <TextInput
                 secureTextEntry={true}
+                value={confirm}
+                onChangeText={setConfirm}
                 style={Styles.Form}
                 placeholder="Confirm Password"
               />
             </Shadow>
+            <View>
+              {password === '' ? (
+                ''
+              ) : password === confirm ? (
+                <Text>비밀번호가 확인 되었습니다.</Text>
+              ) : (
+                <Text>비밀번호를 확인해주세요</Text>
+              )}
+            </View>
             <Pressable
               onPress={() => {}}
               onPressIn={() => {
@@ -132,6 +159,7 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   LoginBtnPressOut: {
+    marginTop: 20,
     width: 280,
     backgroundColor: '#FF889E',
     paddingHorizontal: 10,
@@ -139,6 +167,7 @@ const Styles = StyleSheet.create({
     borderRadius: 10,
   },
   LoginBtnPressIn: {
+    marginTop: 20,
     width: 280,
     backgroundColor: '#FF617E',
     paddingHorizontal: 10,

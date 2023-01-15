@@ -11,6 +11,9 @@ import {
 import {Shadow} from 'react-native-shadow-2';
 const LoginFormScreen = () => {
   const [press, setPress] = useState(false);
+  const [email, setEmail] = useState('');
+  const [passWord, setPassWord] = useState('');
+
   const Navigation = useNavigation();
   return (
     <>
@@ -43,6 +46,8 @@ const LoginFormScreen = () => {
               offset={[0, 2]}
               paintInside={false}>
               <TextInput
+                value={email}
+                onChangeText={setEmail}
                 placeholder="Email"
                 placeholderTextColor={'#828282'}
                 style={Styles.Form}
@@ -50,6 +55,8 @@ const LoginFormScreen = () => {
             </Shadow>
             <Shadow distance={4} offset={[0, 2]} paintInside={false}>
               <TextInput
+                value={passWord}
+                onChangeText={setPassWord}
                 placeholder="Password"
                 placeholderTextColor={'#828282'}
                 style={Styles.Form}

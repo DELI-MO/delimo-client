@@ -65,6 +65,7 @@ export default LoginScreen;
 
 const Styles = StyleSheet.create({
   Container: {
+    backgroundColor: '#fff',
     flex: 1,
   },
   LoginText: {

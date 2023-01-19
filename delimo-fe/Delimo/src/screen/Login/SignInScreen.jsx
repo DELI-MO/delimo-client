@@ -17,9 +17,9 @@ const SignInScreen = () => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
 
-  console.log('email:', email);
-  console.log('password:', password);
-  console.log('confirm:', confirm);
+  // console.log('email:', email);
+  // console.log('password:', password);
+  // console.log('confirm:', confirm);
 
   return (
     <>

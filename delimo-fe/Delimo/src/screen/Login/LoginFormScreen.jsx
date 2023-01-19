@@ -64,7 +64,9 @@ const LoginFormScreen = () => {
               />
             </Shadow>
             <Pressable
-              onPress={() => {}}
+              onPress={() => {
+                Navigation.navigate('BottomTabs');
+              }}
               onPressIn={() => {
                 setPress(true);
               }}

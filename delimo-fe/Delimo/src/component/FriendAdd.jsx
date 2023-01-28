@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-import FriendAddItem from './FriendList/FriendAdd/FriendAddItem';
+import FriendAddItem from './FriendAdd/FriendAddItem';
 const FriendAdd = () => {
   const [friendcode, setfriendcode] = useState('');
   const [search, setSearch] = useState(false);

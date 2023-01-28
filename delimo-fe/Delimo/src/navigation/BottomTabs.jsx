@@ -16,6 +16,7 @@ const BottomTabs = () => {
         initialRouteName="Question"
         screenOptions={{
           tabBarShowLabel: false,
+          // tabBarHideOnKeyboard: true,
           tabBarStyle: {
             position: 'absolute',
             bottom: 25,

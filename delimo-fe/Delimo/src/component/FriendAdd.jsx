@@ -14,14 +14,52 @@ import {
 
 import Modal from 'react-native-modal';
 import FriendAddItem from './FriendAdd/FriendAddItem';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const FriendAdd = () => {
-  const [friendcode, setfriendcode] = useState('');
+  const [code, setfriendcode] = useState('');
   const [search, setSearch] = useState(false);
+  const [fri, setFriend] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const searchId = 'I3Ja2z';
+
+  const getUserToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      return token;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const searchFriend = async () => {
+    const tokens = await getUserToken();
+    console.log('token>>>>', tokens);
+    const token = tokens.replace(/\"/gi, '');
+    console.log('tokentokne>>>', token);
+    const params = {
+      code,
+    };
+    try {
+      const friend = await axios.post(
+        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/friend/findByCode`,
+        params,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(friend);
+      setFriend(friend.data);
+      console.log(fri);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       <View style={Styles.Container}>
@@ -97,12 +135,13 @@ const FriendAdd = () => {
                 style={{flex: 1}}
                 placeholder="친구 코드를 입력해 주세요"
                 onChangeText={setfriendcode}
-                value={friendcode}
+                value={code}
               />
               <Pressable
                 onPress={() => {
                   setSearch(true);
-                  console.log('친구코드:', friendcode);
+                  searchFriend();
+                  console.log('친구코드:', code);
                 }}>
                 <Image
                   source={require('../assets/search.png')}
@@ -116,8 +155,16 @@ const FriendAdd = () => {
                 />
               </Pressable>
             </View>
-            <View style={{marginTop: 250}}>
-              {search === true ? <FriendAddItem /> : <Text>검색해주세요</Text>}
+            <View style={{marginTop: 100}}>
+              {fri ? (
+                <FriendAddItem
+                  name={fri.data.nickname}
+                  resolution={fri.data.resolution}
+                  friendId={fri.data.friendId}
+                />
+              ) : (
+                <Text>검색해주세요</Text>
+              )}
             </View>
           </View>
         </Modal>

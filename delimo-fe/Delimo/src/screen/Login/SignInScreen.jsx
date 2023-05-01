@@ -16,6 +16,7 @@ const SignInScreen = () => {
   const Navigation = useNavigation();
   const [press, setPress] = useState(false);
   const [email, setEmail] = useState('');
+  const [nickName, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   // console.log('email:', email);
@@ -44,10 +45,11 @@ const SignInScreen = () => {
     const data = {
       email: email,
       password: password,
+      nickname: nickName,
     };
     try {
       const response = await axios.post(
-        `http://delimotest-env.eba-kntmckjy.us-east-1.elasticbeanstalk.com/users/new`,
+        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/users/new`,
         data,
       );
       console.log('token>>>', response.data);
@@ -86,7 +88,7 @@ const SignInScreen = () => {
           />
           <Text
             style={{
-              marginTop: 30,
+              marginTop: 10,
               fontSize: 20,
               fontWeight: '800',
               color: '#828282',
@@ -106,6 +108,18 @@ const SignInScreen = () => {
                 onChangeText={setEmail}
                 style={Styles.Form}
                 placeholder="Email"
+              />
+            </Shadow>
+            <Shadow
+              style={{marginBottom: 20}}
+              distance={4}
+              offset={[0, 2]}
+              paintInside={false}>
+              <TextInput
+                value={nickName}
+                onChangeText={setNickname}
+                style={Styles.Form}
+                placeholder="NickName"
               />
             </Shadow>
             <Shadow
@@ -191,7 +205,7 @@ const Styles = StyleSheet.create({
     flex: 1,
   },
   FormBox: {
-    marginTop: 50,
+    marginTop: 35,
     alignItems: 'center',
   },
   Form: {
@@ -201,7 +215,7 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   LoginBtnPressOut: {
-    marginTop: 20,
+    marginTop: 10,
     width: 280,
     backgroundColor: '#FF889E',
     paddingHorizontal: 10,
@@ -209,7 +223,7 @@ const Styles = StyleSheet.create({
     borderRadius: 10,
   },
   LoginBtnPressIn: {
-    marginTop: 20,
+    marginTop: 10,
     width: 280,
     backgroundColor: '#FF617E',
     paddingHorizontal: 10,

@@ -39,7 +39,7 @@ const ResolutionScreen = () => {
     };
     try {
       const response = await axios.patch(
-        `http://delimotest-env.eba-kntmckjy.us-east-1.elasticbeanstalk.com/users/updateResolution`,
+        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/users/updateResolution`,
         data,
         {
           headers: {

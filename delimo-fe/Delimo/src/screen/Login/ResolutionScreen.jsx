@@ -1,35 +1,25 @@
 import react, {useState} from 'react';
 import {
   View,
-  Image,
-  TextInput,
   Text,
   StyleSheet,
   Pressable,
-  Alert,
+  Image,
+  TextInput,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {Shadow} from 'react-native-shadow-2';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const SignInScreen = () => {
+import axios from 'axios';
+import {
+  NavigationHelpersContext,
+  useNavigation,
+} from '@react-navigation/native';
+const ResolutionScreen = () => {
   const Navigation = useNavigation();
+
   const [press, setPress] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-  // console.log('email:', email);
-  // console.log('password:', password);
-  // console.log('confirm:', confirm);
-
-  const storeUserToken = async value => {
-    try {
-      await AsyncStorage.setItem('token', value);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
+  const [resolution, setResolution] = useState('');
+  // console.log('>>>', resolution);
   const getUserToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -38,29 +28,34 @@ const SignInScreen = () => {
       console.log(e);
     }
   };
-  const userToken = getUserToken();
 
-  const loginFunc = async () => {
+  const updateResolution = async () => {
+    const tokens = await getUserToken();
+    console.log('token>>>>', tokens);
+    const token = tokens.replace(/\"/gi, '');
+    console.log('tokentokne>>>', token);
     const data = {
-      email: email,
-      password: password,
+      resolution,
     };
     try {
-      const response = await axios.post(
-        `http://delimotest-env.eba-kntmckjy.us-east-1.elasticbeanstalk.com/users/new`,
+      const response = await axios.patch(
+        `http://delimotest-env.eba-kntmckjy.us-east-1.elasticbeanstalk.com/users/updateResolution`,
         data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
-      console.log('token>>>', response.data);
-      storeUserToken(response.data.data.token);
-      Alert.alert('회원가입 성공', '', [
-        {text: '확인', onPress: () => Navigation.push('Resolution')},
-      ]);
+      console.log(response);
+      if (response.data.code === 200) {
+        Navigation.push('BottomTabs');
+      }
     } catch (err) {
-      Alert.alert('회원가입 오류', '이미 사용중인 이메일 입니다.', [
-        {text: '확인', onPress: () => ''},
-      ]);
+      console.log(err);
     }
   };
+
   return (
     <>
       <View style={Styles.SignInContainer}>
@@ -91,7 +86,7 @@ const SignInScreen = () => {
               fontWeight: '800',
               color: '#828282',
             }}>
-            회원가입
+            나의 한 줄 다짐
           </Text>
         </View>
         <View style={Styles.FormContainer}>
@@ -102,50 +97,17 @@ const SignInScreen = () => {
               offset={[0, 2]}
               paintInside={false}>
               <TextInput
-                value={email}
-                onChangeText={setEmail}
+                value={resolution}
+                onChangeText={setResolution}
                 style={Styles.Form}
-                placeholder="Email"
+                placeholder="resolution"
               />
             </Shadow>
-            <Shadow
-              style={{marginBottom: 20}}
-              distance={4}
-              offset={[0, 2]}
-              paintInside={false}>
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={true}
-                style={Styles.Form}
-                placeholder="Password"
-              />
-            </Shadow>
-            <Shadow
-              style={{marginBottom: 20}}
-              distance={4}
-              offset={[0, 2]}
-              paintInside={false}>
-              <TextInput
-                secureTextEntry={true}
-                value={confirm}
-                onChangeText={setConfirm}
-                style={Styles.Form}
-                placeholder="Confirm Password"
-              />
-            </Shadow>
-            <View>
-              {password === '' ? (
-                ''
-              ) : password === confirm ? (
-                <Text>비밀번호가 확인 되었습니다.</Text>
-              ) : (
-                <Text>비밀번호를 확인해주세요</Text>
-              )}
-            </View>
+
             <Pressable
               onPress={() => {
-                loginFunc();
+                Navigation.push('BottomTabs');
+                updateResolution();
               }}
               onPressIn={() => {
                 setPress(true);
@@ -165,7 +127,7 @@ const SignInScreen = () => {
                   color: '#fff',
                   textAlign: 'center',
                 }}>
-                회원가입
+                시작하기
               </Text>
             </Pressable>
           </View>
@@ -175,7 +137,7 @@ const SignInScreen = () => {
   );
 };
 
-export default SignInScreen;
+export default ResolutionScreen;
 
 const Styles = StyleSheet.create({
   SignInContainer: {
@@ -195,13 +157,14 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
   },
   Form: {
+    textAlign: 'center',
     width: 280,
     backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 20,
   },
   LoginBtnPressOut: {
-    marginTop: 20,
+    marginTop: 70,
     width: 280,
     backgroundColor: '#FF889E',
     paddingHorizontal: 10,
@@ -209,7 +172,7 @@ const Styles = StyleSheet.create({
     borderRadius: 10,
   },
   LoginBtnPressIn: {
-    marginTop: 20,
+    marginTop: 70,
     width: 280,
     backgroundColor: '#FF617E',
     paddingHorizontal: 10,

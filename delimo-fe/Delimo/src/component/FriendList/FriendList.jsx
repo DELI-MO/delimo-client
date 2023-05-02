@@ -1,17 +1,58 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import FriendListItem from './FriendListItem';
 
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const FriendList = () => {
+  const [friend, setFriend] = useState([]);
+  const getUserToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      return token;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    FriendList();
+  }, []);
+
+  const FriendList = async () => {
+    const tokens = await getUserToken();
+    console.log('token>>>>', tokens);
+    const token = tokens.replace(/\"/gi, '');
+    console.log('tokentokne>>>', token);
+
+    try {
+      const res = await axios.get(
+        `http://delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/friend/list`,
+        {
+          headers: {
+            // Authorization: `Bearer ${token}`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
+          },
+        },
+      );
+      console.log(res);
+      setFriend(res.data.data);
+      console.log('=====fre=====', friend);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <>
       <ScrollView
         contentContainerStyle={{paddingBottom: 100}}
         showsVerticalScrollIndicator={false}>
-        {userData.user.map((data, index) => {
+        {friend.map((data, index) => {
           return (
             <View key={index} style={Styles.Container}>
-              <FriendListItem userName={data.userName} title={data.title} />
+              <FriendListItem
+                userName={data.nickname}
+                title={data.resolution}
+              />
             </View>
           );
         })}

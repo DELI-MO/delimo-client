@@ -6,6 +6,7 @@ import LoginFormScreen from '../screen/Login/LoginFormScreen';
 import SignInScreen from '../screen/Login/SignInScreen';
 import BottomTabs from './BottomTabs';
 import ResolutionScreen from '../screen/Login/ResolutionScreen';
+import NotiMain from '../screen/noti/NotiMain';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -23,6 +24,7 @@ const StackNavigator = () => {
       <Stack.Screen name="Resolution" component={ResolutionScreen} />
 
       <Stack.Screen name="BottomTabs" component={BottomTabs} />
+      <Stack.Screen name="Noti" component={NotiMain} />
     </Stack.Navigator>
   );
 };

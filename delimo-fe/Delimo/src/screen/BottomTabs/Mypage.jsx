@@ -12,8 +12,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import MyPageScrollMenu from '../../component/MyPageScrollMenu';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {useNavigation} from '@react-navigation/native';
 const Mypage = () => {
+  const Navigation = useNavigation();
   const [userData, setUserData] = useState();
   const [userName, setUserName] = useState('');
   const [userCode, setUserCode] = useState('');
@@ -62,7 +63,36 @@ const Mypage = () => {
             style={Styles.container}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}>
-            <View style={{alignItems: 'flex-end', paddingRight: 20}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'space-between',
+                justifyContent: 'space-between',
+                paddingHorizontal: 20,
+              }}>
+              <Pressable
+                onPress={() => {
+                  Navigation.navigate('Noti');
+                }}
+                style={{
+                  paddingVertical: 4,
+                  backgroundColor: 'white',
+                  width: 50,
+                  borderRadius: 10,
+                  shadowColor: '#000',
+                  elevation: 2,
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    color: '#000',
+                    fontweight: '700',
+                    fontSize: 10,
+                  }}>
+                  알림
+                </Text>
+              </Pressable>
+
               <TouchableOpacity
                 style={{
                   backgroundColor: '#FF889E',

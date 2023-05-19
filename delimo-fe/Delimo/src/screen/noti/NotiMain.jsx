@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FriendListItem from '../../component/FriendList/FriendListItem';
 import FriendAddListItem from '../../component/NotiItem/FriendListItem';
+import BASE_URL from '../../api/BaseURL';
 const NotiMain = () => {
   const [menu, setMenu] = useState('noti');
   const [friendAdd, setFriendAdd] = useState([]);
@@ -26,15 +27,12 @@ const NotiMain = () => {
     console.log('tokentokne>>>', token);
 
     try {
-      const friend = await axios.get(
-        `http://delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/friend/requested`,
-        {
-          headers: {
-            // Authorization: `Bearer ${token}`,
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
-          },
+      const friend = await axios.get(BASE_URL + `/friend/requested`, {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       setFriendAdd(friend.data.data);
       console.log(friendAdd);
     } catch (e) {

@@ -7,6 +7,7 @@ import SignInScreen from '../screen/Login/SignInScreen';
 import BottomTabs from './BottomTabs';
 import ResolutionScreen from '../screen/Login/ResolutionScreen';
 import NotiMain from '../screen/noti/NotiMain';
+import Diary from '../screen/Diary/diary';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -25,6 +26,7 @@ const StackNavigator = () => {
 
       <Stack.Screen name="BottomTabs" component={BottomTabs} />
       <Stack.Screen name="Noti" component={NotiMain} />
+      <Stack.Screen name="Diary" component={Diary} />
     </Stack.Navigator>
   );
 };

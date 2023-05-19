@@ -12,6 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Shadow} from 'react-native-shadow-2';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BASE_URL from '../../api/BaseURL';
 const SignInScreen = () => {
   const Navigation = useNavigation();
   const [press, setPress] = useState(false);
@@ -48,10 +49,7 @@ const SignInScreen = () => {
       nickname: nickName,
     };
     try {
-      const response = await axios.post(
-        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/users/new`,
-        data,
-      );
+      const response = await axios.post(BASE_URL + `/users/new`, data);
       console.log('token>>>', response.data);
       storeUserToken(response.data.data.token);
       Alert.alert('회원가입 성공', '', [

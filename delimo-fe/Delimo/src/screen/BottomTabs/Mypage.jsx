@@ -13,6 +13,7 @@ import MyPageScrollMenu from '../../component/MyPageScrollMenu';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import BASE_URL from '../../api/BaseURL';
 const Mypage = () => {
   const Navigation = useNavigation();
   const [userData, setUserData] = useState();
@@ -32,14 +33,11 @@ const Mypage = () => {
     const token = tokens.replace(/\"/gi, '');
     console.log('tokentokne>>>', token);
     try {
-      const res = await axios.get(
-        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/users/myPage`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await axios.get(BASE_URL + `/users/myPage`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       // console.log(res.data.data);
       console.log(res);
       setUserData(res.data);

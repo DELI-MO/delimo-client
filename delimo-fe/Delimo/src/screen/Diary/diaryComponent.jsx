@@ -6,7 +6,13 @@ const DiaryComponent = props => {
   return (
     <>
       <Pressable
-        onPress={() => Navigation.push('Diary', {contents: props?.contents})}
+        onPress={() =>
+          Navigation.push('Diary', {
+            contents: props?.contents,
+            privacy: props?.privacy,
+            sentiment: props?.sentiment,
+          })
+        }
         style={styles.container}>
         <Text>{props.contents}</Text>
       </Pressable>
@@ -19,7 +25,7 @@ export default DiaryComponent;
 const styles = StyleSheet.create({
   container: {
     width: 300,
-    height: 350,
+    // height: 150,
     borderColor: '#000',
     borderWidth: 1,
     borderRadius: 10,

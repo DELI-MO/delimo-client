@@ -11,11 +11,17 @@ import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/native';
 
 import BASE_URL from '../../api/BaseURL';
 import DiaryComponent from '../Diary/diaryComponent';
 const Question = () => {
   const Navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [isModalVisible2, setModalVisible2] = useState(false);
+  const toggleModal2 = () => {
+    setModalVisible2(!isModalVisible2);
+  };
   const bodyRef = useRef();
   let today = new Date();
   const date = today.toDateString();
@@ -24,8 +30,8 @@ const Question = () => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const [state, setState] = useState(0); //0: 비공개, 1: 전체공개, 2: 친구공개
-  const [data, setData] = useState('');
+  const [state, setState] = useState(0); //0: 비공개, 1: 친구공개, 2: 전체공개
+  const [data, setData] = useState([]);
   const getUserToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -44,7 +50,7 @@ const Question = () => {
       const res = await axios.get(BASE_URL + `/diary/today`, {
         headers: {
           // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwiZXhwIjoxNjg0NDc0MzE5fQ.xKfyJRFS6Qq1aiFpTAnD5ZkGuEDCoXA2A2Yi8xzpXqM`,
+          Authorization: `Bearer ${token}`,
         },
       });
       console.log('res', res.data);
@@ -56,7 +62,19 @@ const Question = () => {
   console.log(data);
   useEffect(() => {
     getDiaryToday();
-  }, []);
+  }, [isFocused]);
+
+  const sentiment = [
+    '없음',
+    '기쁨',
+    '당황',
+    '분노',
+    '불안',
+    '슬픔',
+    '상처',
+    '성취',
+  ];
+
   return (
     <>
       <View style={styles.container}>
@@ -77,7 +95,7 @@ const Question = () => {
               }}
               style={{
                 position: 'absolute',
-                bottom: 150,
+                bottom: 130,
                 right: 70,
                 backgroundColor: '#97E7DD',
                 paddingHorizontal: 10,
@@ -91,16 +109,48 @@ const Question = () => {
         {data.data && (
           <>
             <View style={{marginTop: 60}}>
-              <DiaryComponent contents={data.data} />
+              {data?.data?.privacy === 0 && (
+                <Text style={{textAlign: 'center', marginBottom: 10}}>
+                  비공개
+                </Text>
+              )}
+
+              {data?.data?.privacy === 1 && (
+                <Text style={{textAlign: 'center', marginBottom: 10}}>
+                  친구공개
+                </Text>
+              )}
+
+              {data?.data?.privacy === 2 && (
+                <Text style={{textAlign: 'center', marginBottom: 10}}>
+                  전체공개
+                </Text>
+              )}
+              {sentiment.map((value, idx) => {
+                return (
+                  data.data.sentiment === idx && (
+                    <Text style={{textAlign: 'center', marginVertical: 10}}>
+                      {value}
+                    </Text>
+                  )
+                );
+              })}
+              <DiaryComponent
+                contents={data.data.content}
+                privacy={data.data.privacy}
+                sentiment={data.data.sentiment}
+              />
             </View>
           </>
         )}
       </View>
       <Pressable
-        onPress={() => {}}
+        onPress={() => {
+          toggleModal2();
+        }}
         style={{
           position: 'absolute',
-          bottom: 150,
+          bottom: 130,
           right: 30,
           backgroundColor: '#000',
           paddingHorizontal: 10,
@@ -109,6 +159,55 @@ const Question = () => {
         }}>
         <Text>전</Text>
       </Pressable>
+      {/* ============sentiment Modal============= */}
+      <View>
+        <Modal
+          isVisible={isModalVisible2}
+          onBackdropPress={() => setModalVisible2(false)}
+          onBackButtonPress={() => setModalVisible2(false)}>
+          <View
+            style={{
+              backgroundColor: '#fff',
+
+              borderRadius: 20,
+            }}>
+            <View style={{paddingVertical: 30, paddingHorizontal: 30}}>
+              {sentiment.map((value, idx) => {
+                return (
+                  data?.data?.sentiment === idx && (
+                    <>
+                      <Text style={{textAlign: 'center', marginVertical: 10}}>
+                        오늘의 감정은 {value} 이네요.
+                      </Text>
+                      <Text style={{textAlign: 'center', marginVertical: 10}}>
+                        기쁘고 행복한 하루를 보내고 있나요?
+                      </Text>
+                      <Text style={{textAlign: 'center', marginVertical: 10}}>
+                        감정 변경하기
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          flexWrap: 'wrap',
+                        }}>
+                        {sentiment.map(value => {
+                          return (
+                            <>
+                              <Text style={{marginHorizontal: 30}}>
+                                {value}
+                              </Text>
+                            </>
+                          );
+                        })}
+                      </View>
+                    </>
+                  )
+                );
+              })}
+            </View>
+          </View>
+        </Modal>
+      </View>
     </>
   );
 };

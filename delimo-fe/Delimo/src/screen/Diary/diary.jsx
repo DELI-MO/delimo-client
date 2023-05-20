@@ -1,6 +1,5 @@
 import react, {useRef, useState} from 'react';
 import Modal from 'react-native-modal';
-
 import {
   View,
   Text,
@@ -10,24 +9,61 @@ import {
   TextInput,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import BASE_URL from '../../api/BaseURL';
 const Diary = ({route}) => {
   const Navigation = useNavigation();
   console.log(route.params);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible1, setModalVisible1] = useState(false);
+
   const [body, setBody] = route
     ? useState(route.params?.contents)
     : useState('');
   const bodyRef = useRef();
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const toggleModal1 = () => {
+    setModalVisible1(!isModalVisible1);
   };
+
   // if (route.params !== undefined) {
   //   setBody(route.params.contents);
   // }
 
   console.log(body);
-  const [state, setState] = useState(0); //0: 비공개, 1: 전체공개, 2: 친구공개
+  const [state, setState] = route
+    ? useState(route.params?.privacy)
+    : useState(0); //0: 비공개, 1: 전체공개, 2: 친구공개
+  const getUserToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      return token;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const writeDiary = async () => {
+    const tokens = await getUserToken();
+    console.log('token>>>>', tokens);
+    const token = tokens.replace(/\"/gi, '');
+    console.log('tokentokne>>>', token);
+    const data = {
+      content: body,
+      privacy: state,
+    };
+    try {
+      const res = await axios.post(BASE_URL + `/diary/today`, data, {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('>>>>>>diary res', res);
+      Navigation.goBack();
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <>
       <View style={{flex: 1}}>
@@ -42,8 +78,11 @@ const Diary = ({route}) => {
             <Pressable>
               <Text style={{fontSize: 16, marginRight: 10}}>수정</Text>
             </Pressable>
-            <Pressable>
-              <Text style={{fontSize: 16}}>완료</Text>
+            <Pressable
+              onPress={() => {
+                writeDiary();
+              }}>
+              <Text style={{fontSize: 16}}>작성</Text>
             </Pressable>
           </View>
         </View>
@@ -59,7 +98,7 @@ const Diary = ({route}) => {
           />
         </View>
         <View style={{alignItems: 'center'}}>
-          <Pressable style={styles.stateBtn} onPress={toggleModal}>
+          <Pressable style={styles.stateBtn} onPress={toggleModal1}>
             {state === 0 && (
               <Text
                 style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
@@ -69,13 +108,13 @@ const Diary = ({route}) => {
             {state === 1 && (
               <Text
                 style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
-                전체 공개
+                친구 공개
               </Text>
             )}
             {state === 2 && (
               <Text
                 style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
-                친구 공개
+                전체 공개
               </Text>
             )}
           </Pressable>
@@ -84,9 +123,9 @@ const Diary = ({route}) => {
       {/* ============Modal============= */}
       <View>
         <Modal
-          isVisible={isModalVisible}
-          onBackdropPress={() => setModalVisible(false)}
-          onBackButtonPress={() => setModalVisible(false)}>
+          isVisible={isModalVisible1}
+          onBackdropPress={() => setModalVisible1(false)}
+          onBackButtonPress={() => setModalVisible1(false)}>
           <View
             style={{
               backgroundColor: '#fff',
@@ -101,8 +140,8 @@ const Diary = ({route}) => {
             <View style={{marginTop: 30}}>
               <TouchableOpacity
                 onPress={() => {
-                  setState(1);
-                  setModalVisible(false);
+                  setState(2);
+                  setModalVisible1(false);
                 }}>
                 <Text
                   style={{
@@ -117,8 +156,8 @@ const Diary = ({route}) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  setState(2);
-                  setModalVisible(false);
+                  setState(1);
+                  setModalVisible1(false);
                 }}>
                 <Text
                   style={{
@@ -134,7 +173,7 @@ const Diary = ({route}) => {
               <TouchableOpacity
                 onPress={() => {
                   setState(0);
-                  setModalVisible(false);
+                  setModalVisible1(false);
                 }}>
                 <Text
                   style={{
@@ -147,7 +186,7 @@ const Diary = ({route}) => {
                   비공개
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <TouchableOpacity onPress={() => setModalVisible1(false)}>
                 <Text
                   style={{
                     textAlign: 'center',

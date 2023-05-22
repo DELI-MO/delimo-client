@@ -17,22 +17,25 @@ const Diary = ({route}) => {
   console.log(route.params);
   const [isModalVisible1, setModalVisible1] = useState(false);
 
-  const [body, setBody] = route
-    ? useState(route.params?.contents)
-    : useState('');
+  const defaultBodyValue = route.params ? route.params?.contents : '';
+  const [body, setBody] = useState(defaultBodyValue);
+
   const bodyRef = useRef();
   const toggleModal1 = () => {
     setModalVisible1(!isModalVisible1);
   };
-
+  console.log('body', body);
   // if (route.params !== undefined) {
   //   setBody(route.params.contents);
   // }
 
   console.log(body);
-  const [state, setState] = route
-    ? useState(route.params?.privacy)
-    : useState(0); //0: 비공개, 1: 전체공개, 2: 친구공개
+
+  const defaultStateValue = route.params ? route.params?.privacy : 0;
+  const [state, setState] = useState(defaultStateValue);
+  //0: 비공개, 1: 전체공개, 2: 친구공개
+
+  console.log('state', state);
   const getUserToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -55,7 +58,7 @@ const Diary = ({route}) => {
       const res = await axios.post(BASE_URL + `/diary/today`, data, {
         headers: {
           // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwiZXhwIjoxNjg0Nzc1MjE2fQ.E8dJ85iWoj-iEqAh--f9izPKrWhI-_U-9q2ROANnmpQ`,
         },
       });
       console.log('>>>>>>diary res', res);

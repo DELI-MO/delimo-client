@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Pressable,
+  Image,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
@@ -25,7 +26,7 @@ const Question = () => {
   const bodyRef = useRef();
   let today = new Date();
   const date = today.toDateString();
-  console.log(date);
+
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -44,17 +45,17 @@ const Question = () => {
     const tokens = await getUserToken();
     console.log('token>>>>', tokens);
     const token = tokens.replace(/\"/gi, '');
-    console.log('tokentokne>>>', token);
+    console.log('tokentoken>>>', token);
 
     try {
       const res = await axios.get(BASE_URL + `/diary/today`, {
         headers: {
           // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwiZXhwIjoxNjg0Nzc1MjE2fQ.E8dJ85iWoj-iEqAh--f9izPKrWhI-_U-9q2ROANnmpQ`,
         },
       });
-      console.log('res', res.data);
       setData(res.data);
+      console.log('res', data);
     } catch (e) {
       console.log('e', e);
     }
@@ -64,6 +65,12 @@ const Question = () => {
     getDiaryToday();
   }, [isFocused]);
 
+  useEffect(() => {
+    if (data?.data?.visited === 1) {
+      console.log('1이상임 시작');
+      toggleModal2();
+    }
+  }, [data]);
   const sentiment = [
     '없음',
     '기쁨',
@@ -74,6 +81,37 @@ const Question = () => {
     '상처',
     '성취',
   ];
+  const [senti, setSenti] = useState('');
+  const [numSenti, setNumSenti] = useState(0);
+  console.log(numSenti);
+
+  const updateSentiment = async () => {
+    const tokens = await getUserToken();
+    console.log('token>>>>', tokens);
+    const token = tokens.replace(/\"/gi, '');
+    console.log('tokentoken>>>', token);
+    const change = {
+      diaryId: data?.data.diaryId,
+      sentimentId: data?.data.sentimentId,
+      newSentiment: numSenti,
+    };
+    try {
+      const res = await axios.patch(
+        BASE_URL + `/diary/updateSentiment`,
+        change,
+        {
+          headers: {
+            // Authorization: `Bearer ${token}`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwiZXhwIjoxNjg0Nzc1MjE2fQ.E8dJ85iWoj-iEqAh--f9izPKrWhI-_U-9q2ROANnmpQ`,
+          },
+        },
+      );
+      console.log('sentiment res>>>>', res);
+      getDiaryToday();
+    } catch (e) {
+      console.log('e', e);
+    }
+  };
 
   return (
     <>
@@ -96,13 +134,16 @@ const Question = () => {
               style={{
                 position: 'absolute',
                 bottom: 130,
-                right: 70,
-                backgroundColor: '#97E7DD',
+                right: 75,
+                backgroundColor: '#5C87F5',
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 borderRadius: 50,
               }}>
-              <Text>글</Text>
+              <Image
+                source={require('../../assets/pen.png')}
+                style={{width: 20, height: 20}}
+              />
             </Pressable>
           </>
         )}
@@ -129,7 +170,9 @@ const Question = () => {
               {sentiment.map((value, idx) => {
                 return (
                   data.data.sentiment === idx && (
-                    <Text style={{textAlign: 'center', marginVertical: 10}}>
+                    <Text
+                      key={idx}
+                      style={{textAlign: 'center', marginVertical: 10}}>
                       {value}
                     </Text>
                   )
@@ -145,19 +188,20 @@ const Question = () => {
         )}
       </View>
       <Pressable
-        onPress={() => {
-          toggleModal2();
-        }}
+        onPress={() => {}}
         style={{
           position: 'absolute',
           bottom: 130,
           right: 30,
-          backgroundColor: '#000',
+          backgroundColor: '#4E3F42',
           paddingHorizontal: 10,
           paddingVertical: 10,
           borderRadius: 50,
         }}>
-        <Text>전</Text>
+        <Image
+          source={require('../../assets/Flip.png')}
+          style={{width: 20, height: 20}}
+        />
       </Pressable>
       {/* ============sentiment Modal============= */}
       <View>
@@ -168,10 +212,21 @@ const Question = () => {
           <View
             style={{
               backgroundColor: '#fff',
-
+              alignItems: 'flex-end',
               borderRadius: 20,
             }}>
-            <View style={{paddingVertical: 30, paddingHorizontal: 30}}>
+            <Pressable
+              onPress={toggleModal2}
+              style={{marginRight: 20, paddingTop: 10}}>
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>X</Text>
+            </Pressable>
+            <View
+              style={{
+                flexDirection: 'column',
+                paddingVertical: 30,
+                paddingHorizontal: 30,
+                alignItems: 'center',
+              }}>
               {sentiment.map((value, idx) => {
                 return (
                   data?.data?.sentiment === idx && (
@@ -183,23 +238,129 @@ const Question = () => {
                         기쁘고 행복한 하루를 보내고 있나요?
                       </Text>
                       <Text style={{textAlign: 'center', marginVertical: 10}}>
-                        감정 변경하기
+                        감정{' '}
+                        <Text
+                          style={{
+                            textDecorationLine: 'underline',
+                          }}>
+                          {senti}
+                        </Text>
+                        으로 변경하기
                       </Text>
                       <View
                         style={{
                           flexDirection: 'row',
+                          justifyContent: 'center',
                           flexWrap: 'wrap',
                         }}>
-                        {sentiment.map(value => {
+                        {sentiment.map((value, idx) => {
                           return (
                             <>
-                              <Text style={{marginHorizontal: 30}}>
-                                {value}
-                              </Text>
+                              <View>
+                                <Pressable
+                                  onPress={() => {
+                                    setSenti(value);
+                                    setNumSenti(idx);
+                                  }}
+                                  key={idx}
+                                  style={
+                                    idx === 0
+                                      ? {
+                                          backgroundColor: '#D9D9D9',
+                                          marginHorizontal: 10,
+                                          marginVertical: 30,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                      : idx === 1
+                                      ? {
+                                          backgroundColor: '#FF9E9E',
+                                          marginHorizontal: 10,
+                                          marginVertical: 30,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                      : idx === 2
+                                      ? {
+                                          backgroundColor: '#7ACFFF',
+                                          marginHorizontal: 10,
+                                          marginVertical: 30,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                      : idx === 3
+                                      ? {
+                                          backgroundColor: '#B881FF',
+                                          marginHorizontal: 10,
+                                          marginVertical: 30,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                      : idx === 4
+                                      ? {
+                                          backgroundColor: '#949494',
+                                          marginHorizontal: 10,
+                                          marginVertical: 15,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                      : idx === 5
+                                      ? {
+                                          backgroundColor: '#D8D022',
+                                          marginHorizontal: 10,
+                                          marginVertical: 15,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                      : idx === 6
+                                      ? {
+                                          backgroundColor: '#FFB36C',
+                                          marginHorizontal: 10,
+                                          marginVertical: 15,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                      : idx === 7 && {
+                                          backgroundColor: '#88DA81',
+                                          marginHorizontal: 10,
+                                          marginVertical: 15,
+                                          borderRadius: 100,
+                                          paddingHorizontal: 10,
+                                          paddingVertical: 5,
+                                        }
+                                  }>
+                                  {idx === 0 ? (
+                                    <Text style={{color: '#000'}}>{value}</Text>
+                                  ) : (
+                                    <Text style={{color: '#FFF'}}>{value}</Text>
+                                  )}
+                                </Pressable>
+                              </View>
                             </>
                           );
                         })}
                       </View>
+                      <Pressable
+                        onPress={() => {
+                          updateSentiment();
+                          toggleModal2();
+                        }}
+                        style={{
+                          backgroundColor: '#D9D9D9',
+                          marginVertical: 20,
+                          borderRadius: 100,
+                          paddingHorizontal: 20,
+                          paddingVertical: 5,
+                        }}>
+                        <Text style={{color: '#000'}}>확인</Text>
+                      </Pressable>
                     </>
                   )
                 );
@@ -230,5 +391,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#636363',
     marginTop: 10,
+  },
+  sentiment: {
+    marginHorizontal: 30,
+    marginVertical: 30,
+    borderRadius: 100,
   },
 });

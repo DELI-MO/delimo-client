@@ -75,17 +75,19 @@ const Diary = ({route}) => {
             onPress={() => {
               Navigation.goBack();
             }}>
-            <Text style={{fontSize: 16}}>뒤로가기</Text>
+            <Text style={{fontSize: 16, color: '#222'}}>뒤로가기</Text>
           </Pressable>
           <View style={{flexDirection: 'row'}}>
             <Pressable>
-              <Text style={{fontSize: 16, marginRight: 10}}>수정</Text>
+              <Text style={{fontSize: 16, marginRight: 10, color: '#222'}}>
+                수정
+              </Text>
             </Pressable>
             <Pressable
               onPress={() => {
                 writeDiary();
               }}>
-              <Text style={{fontSize: 16}}>작성</Text>
+              <Text style={{fontSize: 16, color: '#222'}}>작성</Text>
             </Pressable>
           </View>
         </View>
@@ -95,6 +97,7 @@ const Diary = ({route}) => {
             value={body}
             onChangeText={setBody}
             placeholder="당신의 오늘을 기록해보세요."
+            placeholderTextColor={'#222'}
             textAlignVertical="top"
             ref={bodyRef}
             style={styles.diaryBody}
@@ -104,19 +107,34 @@ const Diary = ({route}) => {
           <Pressable style={styles.stateBtn} onPress={toggleModal1}>
             {state === 0 && (
               <Text
-                style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
+                style={{
+                  fontSize: 14,
+                  color: '#222',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}>
                 비공개
               </Text>
             )}
             {state === 1 && (
               <Text
-                style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
+                style={{
+                  fontSize: 14,
+                  color: '#222',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}>
                 친구 공개
               </Text>
             )}
             {state === 2 && (
               <Text
-                style={{fontSize: 14, fontWeight: 'bold', textAlign: 'center'}}>
+                style={{
+                  fontSize: 14,
+                  color: '#222',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                }}>
                 전체 공개
               </Text>
             )}
@@ -226,6 +244,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 15,
     height: 600,
+    color: '#222',
   },
   header: {
     flexDirection: 'row',

@@ -8,9 +8,25 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = () => {
   const [press, setPress] = useState(false);
   const Navigation = useNavigation();
+
+  const getUserToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        console.log('result', token);
+        Navigation.replace('BottomTabs');
+      } else {
+        console.log('없음', token);
+        Navigation.replace('LoginForm');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <View style={Styles.Container}>
       <View style={Styles.logo}>
@@ -41,7 +57,8 @@ const LoginScreen = () => {
       <View style={Styles.LoginBtnContainer}>
         <Pressable
           onPress={() => {
-            Navigation.navigate('LoginForm');
+            // Navigation.navigate('LoginForm');
+            getUserToken();
           }}
           onPressIn={() => {
             setPress(true);

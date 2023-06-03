@@ -104,6 +104,7 @@ const SignInScreen = () => {
               <TextInput
                 value={email}
                 onChangeText={setEmail}
+                placeholderTextColor={'#828282'}
                 style={Styles.Form}
                 placeholder="Email"
               />
@@ -118,6 +119,7 @@ const SignInScreen = () => {
                 onChangeText={setNickname}
                 style={Styles.Form}
                 placeholder="NickName"
+                placeholderTextColor={'#828282'}
               />
             </Shadow>
             <Shadow
@@ -131,6 +133,7 @@ const SignInScreen = () => {
                 secureTextEntry={true}
                 style={Styles.Form}
                 placeholder="Password"
+                placeholderTextColor={'#828282'}
               />
             </Shadow>
             <Shadow
@@ -144,15 +147,16 @@ const SignInScreen = () => {
                 onChangeText={setConfirm}
                 style={Styles.Form}
                 placeholder="Confirm Password"
+                placeholderTextColor={'#828282'}
               />
             </Shadow>
             <View>
               {password === '' ? (
                 ''
               ) : password === confirm ? (
-                <Text>비밀번호가 확인 되었습니다.</Text>
+                <Text style={{color: '#888'}}>비밀번호가 확인 되었습니다.</Text>
               ) : (
-                <Text>비밀번호를 확인해주세요</Text>
+                <Text style={{color: '#888'}}>비밀번호를 확인해주세요</Text>
               )}
             </View>
             <Pressable
@@ -211,6 +215,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 20,
+    color: '#222',
   },
   LoginBtnPressOut: {
     marginTop: 10,

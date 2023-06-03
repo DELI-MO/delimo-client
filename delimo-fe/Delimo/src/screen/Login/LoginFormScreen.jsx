@@ -1,5 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import react, {useState} from 'react';
+import BASE_URL from '../../api/BaseURL';
+
 import {
   Text,
   View,
@@ -7,14 +9,42 @@ import {
   Image,
   TextInput,
   Pressable,
+  Alert,
 } from 'react-native';
 import {Shadow} from 'react-native-shadow-2';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 const LoginFormScreen = () => {
   const [press, setPress] = useState(false);
   const [email, setEmail] = useState('');
   const [passWord, setPassWord] = useState('');
-
   const Navigation = useNavigation();
+
+  const storeUserToken = async value => {
+    try {
+      await AsyncStorage.setItem('token', value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const tryLogin = async () => {
+    const data = {
+      email: email,
+      password: passWord,
+    };
+    try {
+      const response = await axios.post(BASE_URL + `/users/login`, data);
+      console.log('data', response.data.data.token);
+      storeUserToken(response.data.data.token);
+      Navigation.reset({routes: [{name: 'BottomTabs'}]});
+    } catch (err) {
+      Alert.alert('로그인 실패', '로그인 실패입니다.', [
+        {text: '확인', onPress: () => ''},
+      ]);
+      console.log(err);
+    }
+  };
   return (
     <>
       <View style={Styles.LoginFormContainer}>
@@ -65,7 +95,7 @@ const LoginFormScreen = () => {
             </Shadow>
             <Pressable
               onPress={() => {
-                Navigation.navigate('BottomTabs');
+                tryLogin();
               }}
               onPressIn={() => {
                 setPress(true);
@@ -83,7 +113,7 @@ const LoginFormScreen = () => {
               </Text>
             </Pressable>
             <View style={{flexDirection: 'row', marginTop: 100}}>
-              <Text>아직 계정이 없으신가요? </Text>
+              <Text style={{color: '#222'}}>아직 계정이 없으신가요? </Text>
               <Pressable
                 onPress={() => {
                   Navigation.navigate('SignIn');
@@ -123,6 +153,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 20,
+    color: '#222',
   },
   LoginBtnPressOut: {
     backgroundColor: '#FF889E',

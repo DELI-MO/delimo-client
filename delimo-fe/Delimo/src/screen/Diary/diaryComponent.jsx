@@ -14,7 +14,9 @@ const DiaryComponent = props => {
           })
         }
         style={styles.container}>
-        <Text>{props.contents}</Text>
+        <Text style={{color: '#222', textAlign: 'center'}}>
+          {props.contents}
+        </Text>
       </Pressable>
     </>
   );

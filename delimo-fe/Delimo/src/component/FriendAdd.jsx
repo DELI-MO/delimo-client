@@ -3,6 +3,7 @@ import {Dimensions} from 'react-native';
 import {Press} from 'hammerjs';
 import {ClientRequest} from 'http';
 import react, {useState} from 'react';
+
 import {
   Text,
   View,
@@ -132,8 +133,9 @@ const FriendAdd = () => {
                 borderRadius: 10,
               }}>
               <TextInput
-                style={{flex: 1}}
+                style={{flex: 1, color: '#222'}}
                 placeholder="친구 코드를 입력해 주세요"
+                placeholderTextColor={'#222'}
                 onChangeText={setfriendcode}
                 value={code}
               />

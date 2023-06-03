@@ -52,10 +52,14 @@ const NotiMain = () => {
             justifyContent: 'space-around',
           }}>
           <Pressable onPress={() => setMenu('noti')}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>알림</Text>
+            <Text style={{color: '#222', fontSize: 16, fontWeight: 'bold'}}>
+              알림
+            </Text>
           </Pressable>
           <Pressable onPress={() => setMenu('addFriend')}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>친구 신청</Text>
+            <Text style={{fontSize: 16, fontWeight: 'bold', color: '#222'}}>
+              친구 신청
+            </Text>
           </Pressable>
         </View>
         <ScrollView
@@ -63,7 +67,7 @@ const NotiMain = () => {
           style={{flexDirection: 'column', marginTop: 10}}>
           {menu === 'noti' ? (
             <>
-              <Text>ㅎㅇㅎㅇ</Text>
+              <Text style={{color: '#222'}}>ㅎㅇㅎㅇ</Text>
             </>
           ) : (
             <>

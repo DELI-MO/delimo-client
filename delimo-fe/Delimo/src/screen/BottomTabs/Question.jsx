@@ -41,6 +41,7 @@ const Question = () => {
       console.log(e);
     }
   };
+
   const getDiaryToday = async () => {
     const tokens = await getUserToken();
     console.log('token>>>>', tokens);
@@ -124,7 +125,9 @@ const Question = () => {
         {data.data === null && (
           <>
             <View style={{marginTop: 150}}>
-              <Text>오늘의 일기가 없습니다. 일기를 써주세요</Text>
+              <Text style={{color: '#222', fontSize: 16}}>
+                오늘의 일기가 없습니다. 일기를 써주세요
+              </Text>
             </View>
 
             <Pressable
@@ -151,19 +154,34 @@ const Question = () => {
           <>
             <View style={{marginTop: 60}}>
               {data?.data?.privacy === 0 && (
-                <Text style={{textAlign: 'center', marginBottom: 10}}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    marginBottom: 10,
+                    color: '#888',
+                  }}>
                   비공개
                 </Text>
               )}
 
               {data?.data?.privacy === 1 && (
-                <Text style={{textAlign: 'center', marginBottom: 10}}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    marginBottom: 10,
+                    color: '#888',
+                  }}>
                   친구공개
                 </Text>
               )}
 
               {data?.data?.privacy === 2 && (
-                <Text style={{textAlign: 'center', marginBottom: 10}}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    marginBottom: 10,
+                    color: '#888',
+                  }}>
                   전체공개
                 </Text>
               )}
@@ -172,7 +190,11 @@ const Question = () => {
                   data.data.sentiment === idx && (
                     <Text
                       key={idx}
-                      style={{textAlign: 'center', marginVertical: 10}}>
+                      style={{
+                        textAlign: 'center',
+                        marginVertical: 10,
+                        color: '#222',
+                      }}>
                       {value}
                     </Text>
                   )
@@ -231,17 +253,33 @@ const Question = () => {
                 return (
                   data?.data?.sentiment === idx && (
                     <>
-                      <Text style={{textAlign: 'center', marginVertical: 10}}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          marginVertical: 10,
+                          color: '#222',
+                        }}>
                         오늘의 감정은 {value} 이네요.
                       </Text>
-                      <Text style={{textAlign: 'center', marginVertical: 10}}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          marginVertical: 10,
+                          color: '#222',
+                        }}>
                         기쁘고 행복한 하루를 보내고 있나요?
                       </Text>
-                      <Text style={{textAlign: 'center', marginVertical: 10}}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          marginVertical: 10,
+                          color: '#222',
+                        }}>
                         감정{' '}
                         <Text
                           style={{
                             textDecorationLine: 'underline',
+                            color: '#222',
                           }}>
                           {senti}
                         </Text>
@@ -272,6 +310,7 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                       : idx === 1
                                       ? {
@@ -281,6 +320,7 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                       : idx === 2
                                       ? {
@@ -290,6 +330,7 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                       : idx === 3
                                       ? {
@@ -299,6 +340,7 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                       : idx === 4
                                       ? {
@@ -308,6 +350,7 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                       : idx === 5
                                       ? {
@@ -317,6 +360,7 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                       : idx === 6
                                       ? {
@@ -326,6 +370,7 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                       : idx === 7 && {
                                           backgroundColor: '#88DA81',
@@ -334,12 +379,13 @@ const Question = () => {
                                           borderRadius: 100,
                                           paddingHorizontal: 10,
                                           paddingVertical: 5,
+                                          color: '#888',
                                         }
                                   }>
                                   {idx === 0 ? (
                                     <Text style={{color: '#000'}}>{value}</Text>
                                   ) : (
-                                    <Text style={{color: '#FFF'}}>{value}</Text>
+                                    <Text style={{color: '#000'}}>{value}</Text>
                                   )}
                                 </Pressable>
                               </View>

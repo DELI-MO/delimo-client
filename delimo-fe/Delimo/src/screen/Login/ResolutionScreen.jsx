@@ -8,6 +8,8 @@ import {
   TextInput,
 } from 'react-native';
 import {Shadow} from 'react-native-shadow-2';
+import BASE_URL from '../../api/BaseURL';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {
@@ -39,7 +41,7 @@ const ResolutionScreen = () => {
     };
     try {
       const response = await axios.patch(
-        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/users/updateResolution`,
+        BASE_URL + `/users/updateResolution`,
         data,
         {
           headers: {
@@ -49,7 +51,7 @@ const ResolutionScreen = () => {
       );
       console.log(response);
       if (response.data.code === 200) {
-        Navigation.push('BottomTabs');
+        Navigation.push('LoginForm');
       }
     } catch (err) {
       console.log(err);
@@ -101,12 +103,12 @@ const ResolutionScreen = () => {
                 onChangeText={setResolution}
                 style={Styles.Form}
                 placeholder="resolution"
+                placeholderTextColor={'#828282'}
               />
             </Shadow>
 
             <Pressable
               onPress={() => {
-                Navigation.push('BottomTabs');
                 updateResolution();
               }}
               onPressIn={() => {
@@ -162,6 +164,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     paddingHorizontal: 20,
+    color: '#222',
   },
   LoginBtnPressOut: {
     marginTop: 70,

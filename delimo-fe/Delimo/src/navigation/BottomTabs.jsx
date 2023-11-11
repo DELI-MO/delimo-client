@@ -4,7 +4,7 @@ import Question from '../screen/BottomTabs/Question';
 import Calender from '../screen/BottomTabs/Calender';
 import Mypage from '../screen/BottomTabs/Mypage';
 import Board from '../screen/BottomTabs/Board';
-import Statistic from '../screen/BottomTabs/Statistic';
+import DiaryList from '../screen/BottomTabs/DiaryList';
 import {Image, View} from 'react-native';
 
 const Tab = createBottomTabNavigator();
@@ -50,14 +50,14 @@ const BottomTabs = () => {
           }}
         />
         <Tab.Screen
-          name="Statistic"
-          component={Statistic}
+          name="DiaryList"
+          component={DiaryList}
           options={{
             headerShown: false,
             tabBarIcon: ({focused}) => (
               <View>
                 <Image
-                  source={require('../assets/statistic.png')}
+                  source={require('../assets/diary_list.png')}
                   resizeMode="contain"
                   style={{
                     width: 25,
@@ -69,6 +69,8 @@ const BottomTabs = () => {
             ),
           }}
         />
+      {
+        /*        
         <Tab.Screen
           name="Calender"
           component={Calender}
@@ -89,6 +91,8 @@ const BottomTabs = () => {
             ),
           }}
         />
+        */
+      }
         <Tab.Screen
           name="Board"
           component={Board}

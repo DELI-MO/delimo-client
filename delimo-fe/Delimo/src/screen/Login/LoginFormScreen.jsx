@@ -5,16 +5,42 @@ import {
   View,
   StyleSheet,
   Image,
+  Alert,
   TextInput,
   Pressable,
 } from 'react-native';
 import {Shadow} from 'react-native-shadow-2';
+import axios from 'axios';
+import BASE_URL from '../../api/BaseURL';
 const LoginFormScreen = () => {
   const [press, setPress] = useState(false);
   const [email, setEmail] = useState('');
   const [passWord, setPassWord] = useState('');
-
   const Navigation = useNavigation();
+
+  const login = async () => {
+    const data = {
+      email: email,
+      password: passWord,
+    };
+    try {
+      const res = await axios.post( BASE_URL + `/users/login`, data );
+      //console.log('>>>>>>>res', res.data);
+      if (res.data.code === 200) {
+        Navigation.navigate('BottomTabs');
+      } else {
+        throw new Error('Login failed');
+      }
+    } catch (e) {
+      console.log('e', e);
+      Alert.alert('로그인이 실패했습니다.', '', [
+        {
+          text: '확인',
+          //onPress: () => {},
+        },
+      ]);
+    }
+  };
   return (
     <>
       <View style={Styles.LoginFormContainer}>
@@ -64,9 +90,7 @@ const LoginFormScreen = () => {
               />
             </Shadow>
             <Pressable
-              onPress={() => {
-                Navigation.navigate('BottomTabs');
-              }}
+              onPress={login}
               onPressIn={() => {
                 setPress(true);
               }}

@@ -27,8 +27,8 @@ const FriendList = () => {
     try {
       const res = await axios.get(BASE_URL + `/friend/list`, {
         headers: {
-          // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
+          Authorization: `Bearer ${token}`,
+          //Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
         },
       });
       console.log(res);

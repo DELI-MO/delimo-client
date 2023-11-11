@@ -57,8 +57,8 @@ const Diary = ({route}) => {
     try {
       const res = await axios.post(BASE_URL + `/diary/today`, data, {
         headers: {
-          // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwiZXhwIjoxNjg0Nzc1MjE2fQ.E8dJ85iWoj-iEqAh--f9izPKrWhI-_U-9q2ROANnmpQ`,
+          Authorization: `Bearer ${token}`,
+          //Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJseWJAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjM0IiwiZXhwIjoxNjk5Nzg2MTk1fQ.vFC_RvcV06mvCSTFA18SjYVfDE_CxrSDplMtVtveApk`,
         },
       });
       console.log('>>>>>>diary res', res);

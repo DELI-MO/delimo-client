@@ -10,6 +10,7 @@ import {
 import {Shadow} from 'react-native-shadow-2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import BASE_URL from '../../api/BaseURL';
 import {
   NavigationHelpersContext,
   useNavigation,
@@ -38,10 +39,7 @@ const ResolutionScreen = () => {
       resolution,
     };
     try {
-      const response = await axios.patch(
-        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/users/updateResolution`,
-        data,
-        {
+      const response = await axios.patch( BASE_URL + `/users/updateResolution`, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

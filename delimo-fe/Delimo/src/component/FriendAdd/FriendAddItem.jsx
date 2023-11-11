@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import axios from 'axios';
+import BASE_URL from '../../api/BaseURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const FriendAddItem = props => {
   const getUserToken = async () => {
@@ -28,16 +29,13 @@ const FriendAddItem = props => {
       friendId: props.friendId,
     };
     try {
-      const res = await axios.post(
-        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/friend/request`,
-        data,
-        {
+      const res = await axios.post( BASE_URL + `/friend/request`, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         },
       );
-      console.log('res', res);
+      console.log('>>>>>>>res', res);
       if (res.data.code === 201) {
         Alert.alert('친구 신청을 성공적으로 보냈습니다.', '', [
           {

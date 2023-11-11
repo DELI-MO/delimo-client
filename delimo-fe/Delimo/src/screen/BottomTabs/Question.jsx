@@ -11,10 +11,9 @@ import {
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import BASE_URL from '../../api/BaseURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
-
-import BASE_URL from '../../api/BaseURL';
 import DiaryComponent from '../Diary/diaryComponent';
 const Question = () => {
   const Navigation = useNavigation();
@@ -42,6 +41,7 @@ const Question = () => {
     }
   };
   const getDiaryToday = async () => {
+
     const tokens = await getUserToken();
     console.log('token>>>>', tokens);
     const token = tokens.replace(/\"/gi, '');
@@ -50,8 +50,8 @@ const Question = () => {
     try {
       const res = await axios.get(BASE_URL + `/diary/today`, {
         headers: {
-          // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwiZXhwIjoxNjg0Nzc1MjE2fQ.E8dJ85iWoj-iEqAh--f9izPKrWhI-_U-9q2ROANnmpQ`,
+          Authorization: `Bearer ${token}`,
+          //Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJseWJAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjM0IiwiZXhwIjoxNjk5Nzg2MTk1fQ.vFC_RvcV06mvCSTFA18SjYVfDE_CxrSDplMtVtveApk`,
         },
       });
       setData(res.data);
@@ -86,10 +86,12 @@ const Question = () => {
   console.log(numSenti);
 
   const updateSentiment = async () => {
+
     const tokens = await getUserToken();
     console.log('token>>>>', tokens);
     const token = tokens.replace(/\"/gi, '');
     console.log('tokentoken>>>', token);
+
     const change = {
       diaryId: data?.data.diaryId,
       sentimentId: data?.data.sentimentId,
@@ -101,8 +103,8 @@ const Question = () => {
         change,
         {
           headers: {
-            // Authorization: `Bearer ${token}`,
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwiZXhwIjoxNjg0Nzc1MjE2fQ.E8dJ85iWoj-iEqAh--f9izPKrWhI-_U-9q2ROANnmpQ`,
+            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJseWJAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjM0IiwiZXhwIjoxNjk5Nzg2MTk1fQ.vFC_RvcV06mvCSTFA18SjYVfDE_CxrSDplMtVtveApk`,
           },
         },
       );

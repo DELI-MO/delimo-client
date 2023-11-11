@@ -1,5 +1,6 @@
 import {Text, View, Pressable} from 'react-native';
 import axios from 'axios';
+import BASE_URL from '../../api/BaseURL';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const FriendAddListItem = props => {
   console.log('props', props);
@@ -21,13 +22,10 @@ const FriendAddListItem = props => {
       friendId: props.friendId,
     };
     try {
-      const res = await axios.post(
-        `http://delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/friend/acceptRequest`,
-        data,
-        {
+      const res = await axios.post( BASE_URL + `/friend/acceptRequest`, data, {
           headers: {
-            // Authorization: `Bearer ${token}`,
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
+            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
           },
         },
       );
@@ -46,13 +44,10 @@ const FriendAddListItem = props => {
       friendId: props.friendId,
     };
     try {
-      const res = await axios.post(
-        `http://delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/friend/rejectRequest`,
-        data,
-        {
+      const res = await axios.post( BASE_URL + `/friend/rejectRequest`, data, {
           headers: {
-            // Authorization: `Bearer ${token}`,
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
+            Authorization: `Bearer ${token}`,
+            //Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyM2J3NGQiLCJleHAiOjE2ODMwMjc2NjZ9.81WM_P2SML4_3Jv6288hXVx0mq0Fbj2KmhR8vufe83c`,
           },
         },
       );

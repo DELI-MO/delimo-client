@@ -11,7 +11,7 @@ import {
   Pressable,
   Image,
 } from 'react-native';
-
+import BASE_URL from '../api/BaseURL';
 import Modal from 'react-native-modal';
 import FriendAddItem from './FriendAdd/FriendAddItem';
 import axios from 'axios';
@@ -43,10 +43,7 @@ const FriendAdd = () => {
       code,
     };
     try {
-      const friend = await axios.post(
-        `http://Delimo-env.eba-ufdmrhpz.us-east-1.elasticbeanstalk.com/friend/findByCode`,
-        params,
-        {
+      const friend = await axios.post( BASE_URL + `/friend/findByCode/${code}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -12,11 +12,29 @@ import {
 import {Shadow} from 'react-native-shadow-2';
 import axios from 'axios';
 import BASE_URL from '../../api/BaseURL';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginFormScreen = () => {
   const [press, setPress] = useState(false);
   const [email, setEmail] = useState('');
   const [passWord, setPassWord] = useState('');
   const Navigation = useNavigation();
+
+  const storeUserToken = async value => {
+    try {
+      await AsyncStorage.setItem('token', value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getUserToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      return token;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const userToken = getUserToken();
 
   const login = async () => {
     const data = {
@@ -25,8 +43,9 @@ const LoginFormScreen = () => {
     };
     try {
       const res = await axios.post( BASE_URL + `/users/login`, data );
-      //console.log('>>>>>>>res', res.data);
+      console.log('>>>>>>>res', res.data.data);
       if (res.data.code === 200) {
+        storeUserToken(res.data.data.token);
         Navigation.navigate('BottomTabs');
       } else {
         throw new Error('Login failed');
@@ -36,7 +55,7 @@ const LoginFormScreen = () => {
       Alert.alert('로그인이 실패했습니다.', '', [
         {
           text: '확인',
-          //onPress: () => {},
+          onPress: () => {},
         },
       ]);
     }

@@ -40,7 +40,9 @@ const DiaryList = () => {
         },
       });
       //console.log('boarddata res>>>>>', res);
-      setList(res.data.data);
+      // 게시글을 최신순으로 정렬
+      const sortedData = res.data.data.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+      setList(sortedData);
     } catch (e) {
       console.log(e);
     }
@@ -52,13 +54,16 @@ const DiaryList = () => {
   function formatDate(dateString) {
     const postDate = new Date(dateString);
     const now = new Date();  
+    /*
     if (now.getFullYear() !== postDate.getFullYear()) {
-      return `${postDate.getFullYear()}/${postDate.getMonth() + 1}/${postDate.getDate()} ${postDate.getHours()}:${postDate.getMinutes()}:${postDate.getSeconds()}`;
+      return `${postDate.getFullYear()}/${postDate.getMonth() + 1}/${postDate.getDate()} ${postDate.getHours()}:${postDate.getMinutes()}`;
     }
     if (now.getDate() !== postDate.getDate()) {
       return `${postDate.getMonth() + 1}/${postDate.getDate()},  ${postDate.getHours()}:${postDate.getMinutes()}`;
     }
     return `${postDate.getHours()}:${postDate.getMinutes()}`;
+    */
+    return `${postDate.getMonth() + 1}/${postDate.getDate()},  ${postDate.getHours()}:${postDate.getMinutes()}`;
   }
 
   return (

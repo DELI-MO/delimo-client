@@ -44,13 +44,16 @@ const Board = () => {
   function formatDate(dateString) {
     const postDate = new Date(dateString);
     const now = new Date();  
+    /*
     if (now.getFullYear() !== postDate.getFullYear()) {
-      return `${postDate.getFullYear()}/${postDate.getMonth() + 1}/${postDate.getDate()} ${postDate.getHours()}:${postDate.getMinutes()}:${postDate.getSeconds()}`;
+      return `${postDate.getFullYear()}/${postDate.getMonth() + 1}/${postDate.getDate()} ${postDate.getHours()}:${postDate.getMinutes()}`;
     }
     if (now.getDate() !== postDate.getDate()) {
       return `${postDate.getMonth() + 1}/${postDate.getDate()},  ${postDate.getHours()}:${postDate.getMinutes()}`;
     }
     return `${postDate.getHours()}:${postDate.getMinutes()}`;
+    */
+    return `${postDate.getMonth() + 1}/${postDate.getDate()},  ${postDate.getHours()}:${postDate.getMinutes()}`;
   }
 
   let today = new Date();

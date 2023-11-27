@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import BASE_URL from '../../api/BaseURL';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,10 +15,23 @@ const CommentItem = ({ comment }) => {
   //console.log('CommentItem props', comment);
   return (
     <View style={{flexDirection: 'row'}}>
-      <Text style={{fontSize: 10, color: '#000', fontWeight: 'bold', width: 60}}>{comment.nickname}</Text>
-      <Text style={{fontSize: 10, color: '#000'}}> {comment.content}</Text>
+      <View>
+        <Text style={{fontSize: 10, color: '#000', fontWeight: 'bold', width: 60}}>{comment.nickname}</Text>
+      </View>
+      <View style={{flexShrink: 1}}>
+        <Text style={{fontSize: 10, color: '#000'}}> {comment.content}</Text>
+      </View>
     </View>
   );
+};
+
+const getUserToken = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    return token;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const BoardListItem = props => {
@@ -62,7 +75,7 @@ const BoardListItem = props => {
           <Text style={{marginRight: 10}}>{props.postDate}</Text>
         </View>
         <View style={Styles.line} />
-        <View style={{ paddingHorizontal: 10, marginBottom: 12 }}>          
+        <View style={{ paddingHorizontal: 10, marginBottom: 12 }}>
           <Text style={{fontSize: 12, color: '#000', paddingBottom: 15, marginTop: 12}}>{props.post}</Text>
           <Text style={{fontSize: 8, marginBottom: 40}}>댓글 {props.comments ? props.comments.length : 0}개</Text>
           {props.comments?.map((comment, index) => (
